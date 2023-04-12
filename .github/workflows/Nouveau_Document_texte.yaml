@@ -3,7 +3,8 @@ name: phpcs
 on: push
 
 jobs:
-  Code-Analysis: 
+  sniffsniff: 
+    name: sniffsniff
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -13,12 +14,14 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          tools: cs2pr, phpcs
 
-      - name: Install phpcs
-        run: curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+
+      - name: phpcs
+        run: phpcs -q --report=checkstyle src | cs2pr
          
-      - name: Check coding standards
-        id: phpcs
-        run: ./vendor/bin/phpcs --report=json  --report-file=report.json --standard=PSR2 --colors --encoding=utf-8 app
+      #- name: Check coding standards
+       # id: phpcs
+       # run: ./vendor/bin/phpcs --report=json  --report-file=report.json --standard=PSR2 --colors --encoding=utf-8 app
         
   
